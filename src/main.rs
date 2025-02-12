@@ -1,12 +1,17 @@
-use warp::Filter;
+use axum::{routing::get, Router};
+
+async fn hello_world() -> &'static str {
+    "Hello world"
+}
 
 #[tokio::main]
 async fn main() {
-    // Define a REST endpoint that responds with the string "Hello world"
-    let hello = warp::path!("hello")
-        .map(|| warp::reply::with_status("Hello world", warp::http::StatusCode::OK));
+    // Build our application with a route
+    let app = Router::new().route("/hello", get(hello_world));
 
-    warp::serve(hello)
-        .run(([0, 0, 0, 0], 3033))
-        .await;
+    // Start the server
+    axum::Server::bind(&"0.0.0.0:3033".parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
 }
