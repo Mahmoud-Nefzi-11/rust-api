@@ -1,7 +1,7 @@
 use axum::{routing::get, Router};
 
 async fn hello_world() -> &'static str {
-    "Hello world"
+    "Hello World"
 }
 
 #[tokio::main]
